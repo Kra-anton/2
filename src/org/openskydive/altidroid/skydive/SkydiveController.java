@@ -192,13 +192,13 @@ public class SkydiveController implements AltitudeListener, VerticalAcceleration
             // Switch to climb.
             mJumpInfo.setTakeOffTime(update.getTimestamp());
             newType = SkydiveState.Type.CLIMB;
-        } else if (curType == Type.CLIMB && mSpeed < -25 * M_PER_S) {
+        } else if (curType == Type.CLIMB && mSpeed < -10 * M_PER_S) {
             // Assume it takes 3 seconds to reach free-fall threshold speed (-25 m/s)
             mJumpInfo.setExitTime(update.getTimestamp() - 3000);
             mJumpInfo.setExitAltitude(mHistory10.maxAltitude());
             newType = SkydiveState.Type.FREEFALL;
         } else if ((curType == Type.FREEFALL || curType == Type.CANOPY) &&
-                mSpeed < -25 * M_PER_S) {
+                mSpeed < -10 * M_PER_S) {
             newType = SkydiveState.Type.FREEFALL;
         } else if (curType == Type.FREEFALL || curType == Type.CANOPY) {
             if (mHistory10.maxVariation() < 2 * METERS) {
@@ -206,7 +206,7 @@ public class SkydiveController implements AltitudeListener, VerticalAcceleration
                 mJumpInfo = new JumpInfo();
                 mJumpInfo.setGroundLevel(mHistory2.averageAltitude());
                 newType = SkydiveState.Type.GROUND;
-            } else if (mSpeed > -15 * M_PER_S) {
+            } else if (mSpeed > -10 * M_PER_S) {
                 if (curType == Type.FREEFALL) {
                     logCurrentJump(update);
                 }
